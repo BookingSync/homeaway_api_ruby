@@ -133,13 +133,14 @@ module HomeAway
       private
 
       def parse_url(input)
-        input.concat(query_params) if !@params.nil?
+        input.concat(missing_query_params) if !@params.nil?
         uri = URI.parse(input)
         parsed_url = uri.path, CGI.parse(uri.query)
       end
 
-      def query_params
-        @params.each_with_object("") { |(k, v), str| str << "&#{k.to_s}=#{v}" }
+      def missing_query_params
+        keys_to_skip = ["page", "pageSize"]
+        @params.each_with_object("") { |(k, v), str| str << "&#{k.to_s}=#{v}" if keys_to_skip.exclude?(k) }
       end
     end
   end

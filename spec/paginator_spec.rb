@@ -22,7 +22,9 @@ RSpec.describe HomeAway::API::Paginator do
     end
 
     fcontext "when params given" do
-      let(:params) { { "afterDate" => "2018-09-08", "sort" => "RECEIVED", "sortOrder" => "DESC" } }
+      let(:params) do
+        { "page" => 1, "pageSize" => 10, "afterDate" => "2018-09-08", "sort" => "RECEIVED", "sortOrder" => "DESC" }
+      end
 
       it "iterates through pages using nextPage and given params" do
         expect(client)
