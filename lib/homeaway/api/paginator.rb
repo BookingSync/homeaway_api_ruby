@@ -19,9 +19,10 @@ module HomeAway
       include Enumerable
 
       # @private
-      def initialize(client, hashie, auto_pagination=false)
+      def initialize(client, hashie, params=nil, auto_pagination=false)
         @hashie = hashie
         @client = client
+        @params = params
         @auto_pagination = auto_pagination
       end
 
@@ -132,8 +133,13 @@ module HomeAway
       private
 
       def parse_url(input)
+        input.concat(query_params) if !@params.nil?
         uri = URI.parse(input)
-        return uri.path, CGI.parse(uri.query)
+        parsed_url = uri.path, CGI.parse(uri.query)
+      end
+
+      def query_params
+        @params.each_with_object("") { |(k, v), str| str << "&#{k.to_s}=#{v}" }
       end
     end
   end

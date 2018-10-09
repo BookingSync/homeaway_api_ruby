@@ -50,7 +50,7 @@ module HomeAway
               'asTraveler' => false
           }.merge(HomeAway::API::Util::Validators.query_keys(opts))
           hashie = get '/public/myInbox', params
-          HomeAway::API::Paginator.new(self, hashie, @configuration.auto_pagination)
+          HomeAway::API::Paginator.new(self, hashie, params, @configuration.auto_pagination)
         end
       end
     end
