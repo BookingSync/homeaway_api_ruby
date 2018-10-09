@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe HomeAway::API::Paginator do
   describe "paginator" do
-    subject(:paginator) { HomeAway::API::Paginator.new(client, hashie, params, auto_pagination) }
+    subject(:paginator) { HomeAway::API::Paginator.new(client, hashie, auto_pagination, params) }
     let(:client) { client }
     let(:hashie) do
       Hashie::Mash.new(

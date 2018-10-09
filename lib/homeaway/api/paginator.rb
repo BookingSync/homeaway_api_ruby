@@ -19,11 +19,11 @@ module HomeAway
       include Enumerable
 
       # @private
-      def initialize(client, hashie, params={}, auto_pagination=false)
+      def initialize(client, hashie, auto_pagination=false, params={})
         @hashie = hashie
         @client = client
-        @params = params.transform_values { |v| Array.wrap(v) }
         @auto_pagination = auto_pagination
+        @params = params.transform_values { |v| Array.wrap(v) }
       end
 
       # supply a block that expects a single parameter to iterate through this paginator
@@ -77,7 +77,7 @@ module HomeAway
       def next_page
         return nil unless next_page?
         next_hashie = @client.get(*parse_url(nextPage))
-        self.class.new(@client, next_hashie, @params, @auto_pagination)
+        self.class.new(@client, next_hashie, @auto_pagination, @params)
       end
 
       # updates this paginator to have the next page of results in place
@@ -97,7 +97,7 @@ module HomeAway
       def previous_page
         return nil unless previous_page?
         prev_hashie = @client.get(*parse_url(prevPage))
-        self.class.new(@client, prev_hashie, @auto_pagination)
+        self.class.new(@client, prev_hashie, @auto_pagination, @params)
       end
 
       # updates this paginator to have the previous page of results in place

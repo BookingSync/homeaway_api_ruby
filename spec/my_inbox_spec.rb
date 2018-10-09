@@ -63,7 +63,7 @@ describe 'my inbox' do
     end
 
     it "constucts paginator with response and params" do
-      expect(HomeAway::API::Paginator).to receive(:new).with(client, response, params, true)
+      expect(HomeAway::API::Paginator).to receive(:new).with(client, response, true, params)
 
       client.my_inbox(after_date: "2018-09-08", sort: "RECEIVED", sort_order: "DESC")
     end
