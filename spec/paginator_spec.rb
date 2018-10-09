@@ -21,7 +21,7 @@ RSpec.describe HomeAway::API::Paginator do
       allow(HomeAway::API::Client).to receive(:new).with(opts).and_return(client)
     end
 
-    fcontext "when params given" do
+    context "when params given" do
       let(:params) do
         { "page" => 1, "pageSize" => 10, "afterDate" => "2018-09-08", "sort" => "RECEIVED", "sortOrder" => "DESC" }
       end
