@@ -19,10 +19,10 @@ module HomeAway
       include Enumerable
 
       # @private
-      def initialize(client, hashie, params=nil, auto_pagination=false)
+      def initialize(client, hashie, params={}, auto_pagination=false)
         @hashie = hashie
         @client = client
-        @params = params
+        @params = params.transform_values { |v| Array.wrap(v) }
         @auto_pagination = auto_pagination
       end
 
@@ -77,7 +77,7 @@ module HomeAway
       def next_page
         return nil unless next_page?
         next_hashie = @client.get(*parse_url(nextPage))
-        self.class.new(@client, next_hashie, @auto_pagination)
+        self.class.new(@client, next_hashie, @params, @auto_pagination)
       end
 
       # updates this paginator to have the next page of results in place
@@ -133,14 +133,8 @@ module HomeAway
       private
 
       def parse_url(input)
-        input.concat(missing_query_params) if !@params.nil?
         uri = URI.parse(input)
-        parsed_url = uri.path, CGI.parse(uri.query)
-      end
-
-      def missing_query_params
-        keys_to_skip = ["page", "pageSize"]
-        @params.each_with_object("") { |(k, v), str| str << "&#{k.to_s}=#{v}" if keys_to_skip.exclude?(k) }
+        parsed_url = uri.path, @params.merge(CGI.parse(uri.query))
       end
     end
   end

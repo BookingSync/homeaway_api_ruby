@@ -45,9 +45,9 @@ RSpec.describe HomeAway::API::Paginator do
     end
 
     context "when no params given" do
-      let(:params) { nil }
+      let(:params) { {} }
 
-      it "itterates through pages using nextPage" do
+      it "iterates through pages using nextPage" do
         expect(client)
           .to receive(:get)
           .with("/public/myInbox", {"page"=>["2"], "pageSize"=>["10"]})
